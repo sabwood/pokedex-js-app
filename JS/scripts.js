@@ -1,10 +1,25 @@
 // Height is measured in cm.
-let pokemonList = [{name: 'Beedrill', height: 100, type: ['bug', 'poison']},
-{name: 'Serperior', height: 330, type: ['grass', 'poison']},
-{name: 'Gothorita', height: 70, type: ['psychic', 'fighting']}
-]
+let pokemonRepository = (function(){
+  let pokemonList = [
+    {name: 'Beedrill', height: 100, type: ['bug', 'poison']},
+    {name: 'Serperior', height: 330, type: ['grass', 'poison']},
+    {name: 'Gothorita', height: 70, type: ['psychic', 'fighting']}
+  ];
 
-pokemonList.forEach(function(pokemon){
+  return {
+    getAll: function(){
+        return pokemonList;
+    },
+    add: function (item) {
+      pokemonList.push(item);
+    }
+  }
+})();
+
+console.log(pokemonRepository.getAll());
+console.log(pokemonRepository.add({name: 'Swoobat', height: 90, type: ['psychic', 'fighting'] }));
+
+pokemonRepository.getAll().forEach(function(pokemon){
   if (pokemon.height > 150) // Condition for pokemon with the height > 150cm
     {document.write(
       pokemon.name + 
