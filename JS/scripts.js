@@ -23,10 +23,24 @@ let pokemonRepository = (function(){
     })
   }
 
+function loadDetails(item) {
+    let url = item.detailsUrl;
+    return fetch(url).then(function(response) {
+        return response.json();
+    }).then(function (details) {
+        item.imageUrl = details.sprites.front_default;
+        item.height = details.height;
+        item.types = details.types;
+    }).catch(function(e) {
+        console.error(e);
+    });
+}
+
   return {
     add: add,
     getAll: getAll,
-    loadList: loadList
+    loadList: loadList,
+    loadDetails: loadDetails
   };
 })();
 
@@ -34,7 +48,9 @@ console.log(pokemonRepository.getAll());
 console.log(pokemonRepository.add({name: 'Swoobat', height: 90, type: ['psychic', 'fighting']}))
 
 function showDetails(pokemon) {
-    console.log(pokemon);
+    loadDetails(pokemon).then(function () {
+        console.log(pokemon);
+    });
 }
 
 function addListItem(pokemon){
