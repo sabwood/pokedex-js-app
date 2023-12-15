@@ -5,16 +5,29 @@ let pokemonRepository = (function(){
     {name: 'Serperior', height: 330, type: ['grass', 'poison']},
     {name: 'Gothorita', height: 70, type: ['psychic', 'fighting']}
   ];
+  let apiURL = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
+
+  function loadList() {
+    return fetch(apiURL).then(function (response) {
+        return response.json();
+    }).then(function (json) {
+        json.results.forEach(function (item) {
+            let pokemon = {
+                name: item.name,
+                detailsUrl: item.url
+            };
+            add(pokemon);
+        });
+    }).catch(function (e) {
+        console.error(e);
+    })
+  }
 
   return {
-    getAll: function(){
-        return pokemonList;
-    },
-    add: function (item) {
-        pokemonList.push(item);
-    },
-    addListItem,
-  }
+    add: add,
+    getAll: getAll,
+    loadList: loadList
+  };
 })();
 
 console.log(pokemonRepository.getAll());
@@ -40,7 +53,8 @@ function addListItem(pokemon){
   });
 }
 
-pokemonRepository.getAll().forEach(function(pokemon){
-  pokemonRepository.addListItem(pokemon)
-  }
-);
+pokemonRepository.loadList().then(function() {
+    pokemonRepository.getAll().forEach(function(pokemon){
+        pokemonRepository.addListItem(pokemon)
+      });
+});
