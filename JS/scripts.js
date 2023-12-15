@@ -1,10 +1,8 @@
 // Height is measured in cm.
+// pokemonList = [{name: 'Beedrill', height: 100, type: ['bug', 'poison']}, {name: 'Serperior', height: 330, type: ['grass', 'poison']}, {name: 'Gothorita', height: 70, type: ['psychic', 'fighting']} ]
+
 let pokemonRepository = (function(){
-  let pokemonList = [
-    {name: 'Beedrill', height: 100, type: ['bug', 'poison']},
-    {name: 'Serperior', height: 330, type: ['grass', 'poison']},
-    {name: 'Gothorita', height: 70, type: ['psychic', 'fighting']}
-  ];
+  let pokemonList = [];
   let apiURL = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 
   function loadList() {
@@ -37,15 +35,18 @@ function loadDetails(item) {
 }
 
   return {
+    getAll: function(){
+        return pokemonList;
+    },
     add: add,
-    getAll: getAll,
     loadList: loadList,
     loadDetails: loadDetails
   };
 })();
 
-console.log(pokemonRepository.getAll());
-console.log(pokemonRepository.add({name: 'Swoobat', height: 90, type: ['psychic', 'fighting']}))
+function add (pokemon) {
+    pokemonList.push(pokemon);
+}
 
 function showDetails(pokemon) {
     loadDetails(pokemon).then(function () {
