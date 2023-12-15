@@ -1,9 +1,23 @@
 // Height is measured in cm.
 // pokemonList = [{name: 'Beedrill', height: 100, type: ['bug', 'poison']}, {name: 'Serperior', height: 330, type: ['grass', 'poison']}, {name: 'Gothorita', height: 70, type: ['psychic', 'fighting']} ]
 
-let pokemonRepository = (function(){
+let pokemonRepository = (function () {
   let pokemonList = [];
   let apiURL = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
+
+  function addListItem(pokemon) {
+    let pokemonList = document.querySelector('.pokemon-list');
+    let listItem = document.createElement('li');
+    let button = document.createElement('button');
+  
+    button.innerText = pokemon.name;
+    button.classList.add('pokemon-button');
+  
+    listItem.appendChild(button);
+    pokemonList.appendChild(listItem);
+    
+    button.addEventListener("click", showDetails(pokemon.name));
+  }
 
   function loadList() {
     return fetch(apiURL).then(function (response) {
@@ -34,16 +48,6 @@ function loadDetails(item) {
     });
 }
 
-  return {
-    getAll: function(){
-        return pokemonList;
-    },
-    add: add,
-    loadList: loadList,
-    loadDetails: loadDetails
-  };
-})();
-
 function add (pokemon) {
     pokemonList.push(pokemon);
 }
@@ -54,21 +58,16 @@ function showDetails(pokemon) {
     });
 }
 
-function addListItem(pokemon){
-  let pokemonList = document.querySelector('.pokemon-list');
-  let listItem = document.createElement('li');
-  let button = document.createElement('button');
-
-  button.innerText = pokemon.name;
-  button.classList.add('pokemon-button');
-
-  listItem.appendChild(button);
-  pokemonList.appendChild(listItem);
-  
-  button.addEventListener("click", function () {
-    showDetails(pokemon.name)
-  });
-}
+  return {
+    getAll: function(){
+        return pokemonList;
+    },
+    add: add,
+    addListItem: addListItem,
+    loadList: loadList,
+    loadDetails: loadDetails
+  };
+})();
 
 pokemonRepository.loadList().then(function() {
     pokemonRepository.getAll().forEach(function(pokemon){
