@@ -16,7 +16,9 @@ let pokemonRepository = (function () {
     listItem.appendChild(button);
     pokemonList.appendChild(listItem);
     
-    button.addEventListener("click", showDetails(pokemon.name));
+    button.addEventListener("click", function(event) {
+        showDetails(pokemon);
+    });
   }
 
   function loadList() {
@@ -43,6 +45,7 @@ function loadDetails(item) {
         item.imageUrl = details.sprites.front_default;
         item.height = details.height;
         item.types = details.types;
+        return item;
     }).catch(function(e) {
         console.error(e);
     });
